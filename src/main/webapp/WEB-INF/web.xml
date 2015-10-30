@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+    <servlet>
+        <servlet-name>users</servlet-name>
+        <servlet-class>fr.ecp.sio.appenginedemo.api.UsersServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>users</servlet-name>
+        <url-pattern>users</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>user</servlet-name>
+        <servlet-class>fr.ecp.sio.appenginedemo.api.UserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>user</servlet-name>
+        <url-pattern>users/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>messages</servlet-name>
+        <servlet-class>fr.ecp.sio.appenginedemo.api.MessagesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>messages</servlet-name>
+        <url-pattern>messages</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>message</servlet-name>
+        <servlet-class>fr.ecp.sio.appenginedemo.api.MessageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>message</servlet-name>
+        <url-pattern>messages/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>
