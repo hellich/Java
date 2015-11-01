@@ -13,15 +13,18 @@ import java.io.IOException;
 public class UserServlet extends JsonServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected Object doGet(HttpServletRequest req) throws ServletException, IOException {
+        return null;
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected Object doPost(HttpServletRequest req) throws ServletException, IOException {
+        return null;
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected Object doDelete(HttpServletRequest req) throws ServletException, IOException {
+        return null;
     }
 
 }

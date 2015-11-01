@@ -17,19 +17,21 @@ public class MessageServlet extends JsonServlet {
 
     @Override
     protected Object doGet(HttpServletRequest req) throws ServletException, IOException {
-        // Get URL id
-        // Check id
+        // Get id from URL (path)
+        // Check if id is syntaxically correct
         long id = 0;
         // Lookup in repository
         return MessagesRepository.getMessage(id);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected Object doPost(HttpServletRequest req) throws ServletException, IOException {
+        return null;
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected Object doDelete(HttpServletRequest req) throws ServletException, IOException {
+        return null;
     }
 
 }
