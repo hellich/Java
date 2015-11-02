@@ -1,10 +1,7 @@
 package fr.ecp.sio.appenginedemo.api;
 
-import javax.servlet.Servlet;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -13,17 +10,17 @@ import java.io.IOException;
 public class UserServlet extends JsonServlet {
 
     @Override
-    protected Object doGet(HttpServletRequest req) throws ServletException, IOException {
+    protected Object doGet(HttpServletRequest req) throws ServletException, IOException, ApiException {
         return null;
     }
 
     @Override
-    protected Object doPost(HttpServletRequest req) throws ServletException, IOException {
+    protected Object doPost(HttpServletRequest req) throws ServletException, IOException, ApiException {
         return null;
     }
 
     @Override
-    protected Object doDelete(HttpServletRequest req) throws ServletException, IOException {
+    protected Object doDelete(HttpServletRequest req) throws ServletException, IOException, ApiException {
         return null;
     }
 

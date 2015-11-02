@@ -1,4 +1,4 @@
-package fr.ecp.sio.appenginedemo;
+package fr.ecp.sio.appenginedemo.data;
 
 import fr.ecp.sio.appenginedemo.model.Message;
 

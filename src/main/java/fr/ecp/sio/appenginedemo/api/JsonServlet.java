@@ -15,31 +15,46 @@ public class JsonServlet extends HttpServlet {
 
     @Override
     protected final void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Object response = doGet(req);
-        sendResponse(response,resp);
+        try {
+            Object response = doGet(req);
+            sendResponse(response, resp);
+        } catch (ApiException e) {
+            resp.setStatus(e.getError().status);
+            sendResponse(e.getError(), resp);
+        }
     }
 
-    protected Object doGet(HttpServletRequest req) throws ServletException, IOException {
+    protected Object doGet(HttpServletRequest req) throws ServletException, IOException, ApiException {
         return null;
     }
 
     @Override
     protected final void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Object response = doPost(req);
-        sendResponse(response,resp);
+        try {
+            Object response = doPost(req);
+            sendResponse(response,resp);
+        } catch (ApiException e) {
+            resp.setStatus(e.getError().status);
+            sendResponse(e.getError(), resp);
+        }
     }
 
-    protected Object doPost(HttpServletRequest req) throws ServletException, IOException {
+    protected Object doPost(HttpServletRequest req) throws ServletException, IOException, ApiException {
         return null;
     }
 
     @Override
     protected final void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Object response = doDelete(req);
-        sendResponse(response,resp);
+        try {
+            Object response = doDelete(req);
+            sendResponse(response,resp);
+        } catch (ApiException e) {
+            resp.setStatus(e.getError().status);
+            sendResponse(e.getError(), resp);
+        }
     }
 
-    protected Object doDelete(HttpServletRequest req) throws ServletException, IOException {
+    protected Object doDelete(HttpServletRequest req) throws ServletException, IOException, ApiException {
         return null;
     }
 
