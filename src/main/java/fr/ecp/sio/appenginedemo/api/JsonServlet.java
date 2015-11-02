@@ -1,6 +1,8 @@
 package fr.ecp.sio.appenginedemo.api;
 
 import com.google.gson.Gson;
+import fr.ecp.sio.appenginedemo.data.UsersRepository;
+import fr.ecp.sio.appenginedemo.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -61,6 +63,20 @@ public class JsonServlet extends HttpServlet {
     private void sendResponse(Object response, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
         new Gson().toJson(response, resp.getWriter());
+    }
+
+    protected User getAuthenticatedUser(HttpServletRequest req) {
+        String auth = req.getHeader("Authorization");
+        if (auth != null) {
+            // Check that auth is "Bearer {a token}" (Pattern)
+            // Check token
+            // Handle possible error
+            // Get the id of the user
+            long id = 2;
+            return UsersRepository.getUser(id);
+        } else {
+            return null;
+        }
     }
 
 }

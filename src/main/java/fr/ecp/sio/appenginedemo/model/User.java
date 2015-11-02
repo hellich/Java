@@ -6,7 +6,7 @@ package fr.ecp.sio.appenginedemo.model;
 public class User {
 
     public long id;
-    public String username;
+    public String login;
     public String avatar;
     public String coverPicture;
     public String email;

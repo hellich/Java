@@ -3,8 +3,10 @@ package fr.ecp.sio.appenginedemo.api;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import fr.ecp.sio.appenginedemo.data.UsersRepository;
+import fr.ecp.sio.appenginedemo.utils.TokenUtils;
 import fr.ecp.sio.appenginedemo.utils.ValidationUtils;
 import fr.ecp.sio.appenginedemo.model.User;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,10 +40,12 @@ public class TokenServlet extends JsonServlet {
         // Get user from login
         User user = UsersRepository.getUser(login);
         if (user != null) {
-            // SHA 256 password (salt = id)
-            // Check password (hash...)
-            // Generate token
-            return "a567z";
+            String hash = DigestUtils.sha256Hex(password + user.id);
+            if (hash.equals(user.password)) {
+                return TokenUtils.generateToken(user.id);
+            } else {
+                throw new ApiException(403, "invalidPassword", "Incorrect password");
+            }
         } else {
             throw new ApiException(404, "invalidLogin", "User not found");
         }
