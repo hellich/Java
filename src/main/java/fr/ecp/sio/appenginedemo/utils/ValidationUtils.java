@@ -1,5 +1,7 @@
 package fr.ecp.sio.appenginedemo.utils;
 
+import org.apache.commons.validator.routines.EmailValidator;
+
 /**
  * Created by Michaël on 02/11/2015.
  */
@@ -14,6 +16,10 @@ public class ValidationUtils {
 
     public static boolean validatePassword(String password) {
         return password != null && password.matches(PASSWORD_PATTERN);
+    }
+
+    public static boolean validateEmail(String email) {
+        return EmailValidator.getInstance(false).isValid(email);
     }
 
 }

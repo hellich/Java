@@ -1,5 +1,6 @@
 package fr.ecp.sio.appenginedemo.data;
 
+import com.googlecode.objectify.ObjectifyService;
 import fr.ecp.sio.appenginedemo.model.Message;
 
 /**
@@ -7,8 +8,16 @@ import fr.ecp.sio.appenginedemo.model.Message;
  */
 public class MessagesRepository {
 
+    static {
+        ObjectifyService.register(Message.class);
+    }
+
     public static Message getMessage(long id) {
-        return null;
+        return ObjectifyService.ofy()
+                .load()
+                .type(Message.class)
+                .id(id)
+                .now();
     }
 
 }

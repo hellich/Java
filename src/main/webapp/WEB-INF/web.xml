@@ -2,21 +2,21 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
     <servlet>
-        <servlet-name>users</servlet-name>
-        <servlet-class>fr.ecp.sio.appenginedemo.api.UsersServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>users</servlet-name>
-        <url-pattern>users</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>user</servlet-name>
         <servlet-class>fr.ecp.sio.appenginedemo.api.UserServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>user</servlet-name>
         <url-pattern>users/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>users</servlet-name>
+        <servlet-class>fr.ecp.sio.appenginedemo.api.UsersServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>users</servlet-name>
+        <url-pattern>users</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -45,5 +45,14 @@
         <servlet-name>token</servlet-name>
         <url-pattern>auth/token</url-pattern>
     </servlet-mapping>
+
+    <filter>
+        <filter-name>ObjectifyFilter</filter-name>
+        <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ObjectifyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
 </web-app>

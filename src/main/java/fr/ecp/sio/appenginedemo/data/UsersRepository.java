@@ -1,5 +1,7 @@
 package fr.ecp.sio.appenginedemo.data;
 
+import com.googlecode.objectify.ObjectifyService;
+import fr.ecp.sio.appenginedemo.model.Message;
 import fr.ecp.sio.appenginedemo.model.User;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -12,39 +14,42 @@ import java.util.function.Predicate;
  */
 public class UsersRepository {
 
-    // TODO: Implement with Google Datastore and Objectify
-    // https://cloud.google.com/appengine/docs/java/datastore/
-
-    private static final List<User> mUsers = new ArrayList<>();
-
     static {
-        User john = new User();
-        john.id = 2;
-        john.login = "john";
-        john.password = DigestUtils.sha256Hex("toto" + john.id);
-        mUsers.add(john);
+        ObjectifyService.register(User.class);
     }
 
-    public static User getUser(final String login) {
+    public static User getUserByLogin(final String login) {
+        return ObjectifyService.ofy()
+                .load()
+                .type(User.class)
+                .filter("login", login)
+                .first()
+                .now();
+    }
 
-        // Simple iteration
-        for (User user : mUsers) {
-            if (user.login.equals(login)) return user;
-        }
-        return null;
-
-        // Lambda + streams (Java 8+)
-        /*return mUsers.stream()
-                .filter(user -> user.login.equals(login))
-                .findFirst()
-                .get();*/
+    public static User getUserByEmail(final String email) {
+        return ObjectifyService.ofy()
+                .load()
+                .type(User.class)
+                .filter("email", email)
+                .first()
+                .now();
     }
 
     public static User getUser(long id) {
-        for (User user : mUsers) {
-            if (user.id == id) return user;
-        }
-        return null;
+        return ObjectifyService.ofy()
+                .load()
+                .type(User.class)
+                .id(id)
+                .now();
+    }
+
+    public static long insertUser(User user) {
+        return ObjectifyService.ofy()
+                .save()
+                .entity(user)
+                .now()
+                .getId();
     }
 
 }

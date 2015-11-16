@@ -1,7 +1,6 @@
 package fr.ecp.sio.appenginedemo.api;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import fr.ecp.sio.appenginedemo.data.UsersRepository;
 import fr.ecp.sio.appenginedemo.utils.TokenUtils;
 import fr.ecp.sio.appenginedemo.utils.ValidationUtils;
@@ -11,7 +10,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  * Created by Michaël on 02/11/2015.
@@ -19,13 +17,10 @@ import java.io.InputStreamReader;
 public class TokenServlet extends JsonServlet {
 
     @Override
-    protected Object doPost(HttpServletRequest req) throws ServletException, IOException, ApiException {
+    protected String doPost(HttpServletRequest req) throws ServletException, IOException, ApiException {
 
         // Extract login and password from request
-        JsonObject params = new JsonParser()
-                .parse(
-                    new InputStreamReader(req.getInputStream())
-                ).getAsJsonObject();
+        JsonObject params = getJsonParameters(req);
         String login = params.get("login").getAsString();
         String password = params.get("password").getAsString();
 
@@ -38,7 +33,7 @@ public class TokenServlet extends JsonServlet {
         }
 
         // Get user from login
-        User user = UsersRepository.getUser(login);
+        User user = UsersRepository.getUserByLogin(login);
         if (user != null) {
             String hash = DigestUtils.sha256Hex(password + user.id);
             if (hash.equals(user.password)) {

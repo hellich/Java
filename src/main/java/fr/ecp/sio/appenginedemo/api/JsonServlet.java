@@ -1,6 +1,8 @@
 package fr.ecp.sio.appenginedemo.api;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import fr.ecp.sio.appenginedemo.data.UsersRepository;
 import fr.ecp.sio.appenginedemo.model.User;
 
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * Created by Michaël on 30/10/2015.
@@ -65,7 +68,7 @@ public class JsonServlet extends HttpServlet {
         new Gson().toJson(response, resp.getWriter());
     }
 
-    protected User getAuthenticatedUser(HttpServletRequest req) {
+    protected static User getAuthenticatedUser(HttpServletRequest req) {
         String auth = req.getHeader("Authorization");
         if (auth != null) {
             // Check that auth is "Bearer {a token}" (Pattern)
@@ -77,6 +80,20 @@ public class JsonServlet extends HttpServlet {
         } else {
             return null;
         }
+    }
+
+    protected static JsonObject getJsonParameters(HttpServletRequest req) throws IOException {
+        return new JsonParser()
+                .parse(
+                        new InputStreamReader(req.getInputStream())
+                ).getAsJsonObject();
+    }
+
+    protected static <T> T getJsonParameters(HttpServletRequest req, Class<T> type) throws IOException {
+        return new Gson().fromJson(
+                new InputStreamReader(req.getInputStream()),
+                type
+        );
     }
 
 }

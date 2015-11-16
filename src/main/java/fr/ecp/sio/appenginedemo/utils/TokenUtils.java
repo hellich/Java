@@ -1,6 +1,5 @@
 package fr.ecp.sio.appenginedemo.utils;
 
-import fr.ecp.sio.appenginedemo.model.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.MacProvider;
