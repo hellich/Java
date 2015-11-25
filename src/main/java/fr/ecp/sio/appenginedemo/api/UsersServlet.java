@@ -18,7 +18,7 @@ public class UsersServlet extends JsonServlet {
 
     @Override
     protected Object doGet(HttpServletRequest req) throws ServletException, IOException, ApiException {
-        return null;
+        return UsersRepository.getUsers();
     }
 
     @Override

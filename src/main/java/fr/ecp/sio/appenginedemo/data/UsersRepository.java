@@ -44,6 +44,13 @@ public class UsersRepository {
                 .now();
     }
 
+    public static List<User> getUsers() {
+        return ObjectifyService.ofy()
+                .load()
+                .type(User.class)
+                .list();
+    }
+
     public static long insertUser(User user) {
         return ObjectifyService.ofy()
                 .save()

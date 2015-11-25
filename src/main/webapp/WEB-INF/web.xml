@@ -20,6 +20,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>message</servlet-name>
+        <servlet-class>fr.ecp.sio.appenginedemo.api.MessageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>message</servlet-name>
+        <url-pattern>messages/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>messages</servlet-name>
         <servlet-class>fr.ecp.sio.appenginedemo.api.MessagesServlet</servlet-class>
     </servlet>
@@ -28,14 +37,6 @@
         <url-pattern>messages</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>message</servlet-name>
-        <servlet-class>fr.ecp.sio.appenginedemo.api.MessageServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>message</servlet-name>
-        <url-pattern>messages/*</url-pattern>
-    </servlet-mapping>
 
     <servlet>
         <servlet-name>token</servlet-name>

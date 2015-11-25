@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import fr.ecp.sio.appenginedemo.data.UsersRepository;
+import fr.ecp.sio.appenginedemo.gson.GsonFactory;
 import fr.ecp.sio.appenginedemo.model.User;
+import fr.ecp.sio.appenginedemo.utils.TokenUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,11 +14,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.SignatureException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Michaël on 30/10/2015.
  */
 public class JsonServlet extends HttpServlet {
+
+    protected static final Pattern AUTHORIZATION_PATTERN = Pattern.compile("Bearer (.+)");
 
     @Override
     protected final void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -65,18 +72,22 @@ public class JsonServlet extends HttpServlet {
 
     private void sendResponse(Object response, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
-        new Gson().toJson(response, resp.getWriter());
+        GsonFactory.getGson().toJson(response, resp.getWriter());
     }
 
-    protected static User getAuthenticatedUser(HttpServletRequest req) {
+    protected static User getAuthenticatedUser(HttpServletRequest req) throws ApiException {
         String auth = req.getHeader("Authorization");
         if (auth != null) {
-            // Check that auth is "Bearer {a token}" (Pattern)
-            // Check token
-            // Handle possible error
-            // Get the id of the user
-            long id = 2;
-            return UsersRepository.getUser(id);
+            Matcher m = AUTHORIZATION_PATTERN.matcher(auth);
+            if (!m.matches()) {
+                throw new ApiException(401, "invalidAuthorization", "Invalid authorization header format");
+            }
+            try {
+                long id = TokenUtils.parseToken(m.group(1));
+                return UsersRepository.getUser(id);
+            } catch (SignatureException e) {
+                throw new ApiException(401, "invalidAuthorization", "Invalid token");
+            }
         } else {
             return null;
         }
@@ -90,7 +101,7 @@ public class JsonServlet extends HttpServlet {
     }
 
     protected static <T> T getJsonParameters(HttpServletRequest req, Class<T> type) throws IOException {
-        return new Gson().fromJson(
+        return GsonFactory.getGson().fromJson(
                 new InputStreamReader(req.getInputStream()),
                 type
         );
