@@ -38,6 +38,7 @@ public class MessagesServlet extends JsonServlet {
         // TODO: validate message
 
         message.user = Ref.create(getAuthenticatedUser(req));
+        message.date = new Date();
         message.id = null;
         message.id = MessagesRepository.insertMessage(message);
 

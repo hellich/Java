@@ -7,7 +7,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Created by Michaël on 02/11/2015.

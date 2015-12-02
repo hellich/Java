@@ -78,11 +78,6 @@
             <artifactId>commons-validator</artifactId>
             <version>1.5.0</version>
         </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.10</version>
-        </dependency>
 
     </dependencies>
 
@@ -138,8 +133,8 @@
                     <enableJarClasses>false</enableJarClasses>
                     <version>${app.version}</version>
                     <!-- Comment in the below snippet to bind to all IPs instead of just localhost -->
-                    <!-- address>0.0.0.0</address>
-                    <port>8080</port -->
+                    <!-- address>0.0.0.0</address-->
+                    <port>9000</port>
                     <!-- Comment in the below snippet to enable local debugging with a remote debugger
                          like those included with Eclipse or IntelliJ -->
                     <jvmFlags>
