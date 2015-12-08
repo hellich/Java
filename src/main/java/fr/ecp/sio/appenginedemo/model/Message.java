@@ -7,15 +7,22 @@ import com.googlecode.objectify.annotation.Id;
 import java.util.Date;
 
 /**
- * Created by Michaël on 30/10/2015.
+ * A model class to represent a single message
  */
+// The annotation comes from the Objectify library.
+// It identifies this class as persistable into the Datastore.
 @Entity
 public class Message {
 
+    // An entity should have a field marked with the @Id annotation; it becomes the id for the Datastore (unicity, index, etc.)
     @Id
     public Long id;
     public String text;
     public Date date;
+    // We don't use a simple User field for the author of the message.
+    // Instead, we use a special Objectify class, a Ref<>, witch is just a reference to a user entity.
+    // This trick allows lazy loading of users, and populating our model classes (remember there is not JOIN in the Datastore).
+    // We take care of how this Ref<> will be serialized into JSON in the GsonFactory class
     public Ref<User> user;
 
 }

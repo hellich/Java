@@ -1,12 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
+    <!--
+        Filters can be added to redirect, encapsulate or modify the request before it goes to a servlet.
+        We can also use them to do some common processing for all requests.
+        Every filter must be first declared with a <filter> tag, then matched with a <filter-mapping> definition
+    -->
+    <filter>
+        <!--
+            This filter is required by Objectify, see the documentation
+        -->
+        <filter-name>ObjectifyFilter</filter-name>
+        <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ObjectifyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <!--
+            The standard url-pattern system in web.xml is very limited, we add a custom third-party filter to enrich it.
+            This filter has a separate urlrewrite.xml file with additional rewriting definitions.
+        -->
+        <filter-name>UrlRewriteFilter</filter-name>
+        <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UrlRewriteFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+
+    <!--
+        Here we must declare all our servlets, and assign a URL mapping to it.
+        Generic mappings (with "/*") must go before their exact-matching counterpart.
+    -->
+
     <servlet>
         <servlet-name>user</servlet-name>
         <servlet-class>fr.ecp.sio.appenginedemo.api.UserServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>user</servlet-name>
+        <!-- This will match any URL path starting with "users/". The * wildcard can only be at the end and there is no way the restrict the pattern. -->
         <url-pattern>users/*</url-pattern>
     </servlet-mapping>
 
@@ -37,7 +75,6 @@
         <url-pattern>messages</url-pattern>
     </servlet-mapping>
 
-
     <servlet>
         <servlet-name>token</servlet-name>
         <servlet-class>fr.ecp.sio.appenginedemo.api.TokenServlet</servlet-class>
@@ -46,14 +83,5 @@
         <servlet-name>token</servlet-name>
         <url-pattern>auth/token</url-pattern>
     </servlet-mapping>
-
-    <filter>
-        <filter-name>ObjectifyFilter</filter-name>
-        <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>ObjectifyFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 
 </web-app>

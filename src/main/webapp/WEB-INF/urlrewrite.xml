@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"
+        "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+<urlrewrite>
+
+    <!--
+        A specific XML configuration file for the UrlRewriteFilter added in web.xml.
+        It allows a far richer control over URL patterns and rewriting before going to the servlets.
+    -->
+    <rule>
+        <!-- URLs like /users/78264/followed will be processed as /users?followedBy=78264 -->
+        <from>/users/(\w+)/followed</from>
+        <to>/users?followedBy=$1</to>
+    </rule>
+
+    <rule>
+        <!-- URLs like /users/78264/followers will be processed as /users?followerOf=78264 -->
+        <from>/users/(\w+)/followers</from>
+        <to>/users?followerOf=$1</to>
+    </rule>
+
+</urlrewrite>

@@ -1,7 +1,7 @@
 package fr.ecp.sio.appenginedemo.model;
 
 /**
- * Created by Michaël on 02/11/2015.
+ * A model class to represent an API error
  */
 public class Error {
 

@@ -1,6 +1,5 @@
 package fr.ecp.sio.appenginedemo.api;
 
-import com.googlecode.objectify.ObjectifyFactory;
 import fr.ecp.sio.appenginedemo.data.UsersRepository;
 import fr.ecp.sio.appenginedemo.model.User;
 import fr.ecp.sio.appenginedemo.utils.TokenUtils;
@@ -10,25 +9,34 @@ import org.apache.commons.codec.digest.DigestUtils;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 /**
- * Created by Michaël on 30/10/2015.
+ * A servlet to handle all the requests on a list of users
+ * All requests on the exact path "/users" are handled here.
  */
 public class UsersServlet extends JsonServlet {
 
+    // A GET request should return a list of users
     @Override
-    protected Object doGet(HttpServletRequest req) throws ServletException, IOException, ApiException {
+    protected List<User> doGet(HttpServletRequest req) throws ServletException, IOException, ApiException {
+        // TODO: define parameters to search/filter users by login, with limit, order...
+        // TODO: define parameters to get the followings and the followers of a user given its id
         return UsersRepository.getUsers();
     }
 
+    // A POST request can be used to create a user
+    // We can use it as a "register" endpoint; in this case we return a token to the client.
     @Override
     protected String doPost(HttpServletRequest req) throws ServletException, IOException, ApiException {
 
-        User user = getJsonParameters(req, User.class);
+        // The request should be a JSON object describing a new user
+        User user = getJsonRequestBody(req, User.class);
         if (user == null) {
             throw new ApiException(400, "invalidRequest", "Invalid JSON body");
         }
 
+        // Perform all the usul checkings
         if (!ValidationUtils.validateLogin(user.login)) {
             throw new ApiException(400, "invalidLogin", "Login did not match the specs");
         }
@@ -47,16 +55,19 @@ public class UsersServlet extends JsonServlet {
         }
 
         // Explicitly give a fresh id to the user (we need it for next step)
-        user.id = new ObjectifyFactory().allocateId(User.class).getId();
+        user.id = UsersRepository.allocateNewId();
 
-        // Hash password
+        // TODO: find a solution to receive an store profile pictures
+
+        // Hash the user password with the id a a salt
         user.password = DigestUtils.sha256Hex(user.password + user.id);
 
-        // Save user
-        long id = UsersRepository.insertUser(user);
+        // Persist the user into the repository
+        UsersRepository.insertUser(user);
 
-        // Return a token
-        return TokenUtils.generateToken(id);
+        // Create and return a token for the new user
+        return TokenUtils.generateToken(user.id);
+
     }
 
 }

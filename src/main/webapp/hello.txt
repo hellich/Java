@@ -1,1 +1,2 @@
-Hello world
+All static files, like this one, inside the webapp directory will be accessible at the root of the deployed web application.
+The WEB-INF folder is NOT accessible though.

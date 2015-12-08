@@ -3,10 +3,12 @@ package fr.ecp.sio.appenginedemo.utils;
 import org.apache.commons.validator.routines.EmailValidator;
 
 /**
- * Created by Michaël on 02/11/2015.
+ * Some utils to validate user inputs.
+ * Never relies on the client applications, always re-validate.
  */
 public class ValidationUtils {
 
+    // Regex patterns for the login and the password
     private static final String LOGIN_PATTERN = "^[A-Za-z0-9_-]{4,12}$";
     private static final String PASSWORD_PATTERN = "^\\w{4,12}$";
 
@@ -19,6 +21,7 @@ public class ValidationUtils {
     }
 
     public static boolean validateEmail(String email) {
+        // Here we use a library from Apache Commons to do the validation
         return EmailValidator.getInstance(false).isValid(email);
     }
 
