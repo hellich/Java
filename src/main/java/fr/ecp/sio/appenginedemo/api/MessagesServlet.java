@@ -39,6 +39,7 @@ public class MessagesServlet extends JsonServlet {
         // Some values of the Message should not be sent from the client app
         // Instead, we give them here explicit value
         message.user = Ref.create(getAuthenticatedUser(req));
+        message.date = new Date();
         message.id = null;
 
         // Our message is now ready to be persisted into our repository

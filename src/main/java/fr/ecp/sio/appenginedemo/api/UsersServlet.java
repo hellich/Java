@@ -2,6 +2,7 @@ package fr.ecp.sio.appenginedemo.api;
 
 import fr.ecp.sio.appenginedemo.data.UsersRepository;
 import fr.ecp.sio.appenginedemo.model.User;
+import fr.ecp.sio.appenginedemo.utils.MD5Utils;
 import fr.ecp.sio.appenginedemo.utils.TokenUtils;
 import fr.ecp.sio.appenginedemo.utils.ValidationUtils;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -53,6 +54,8 @@ public class UsersServlet extends JsonServlet {
         if (UsersRepository.getUserByEmail(user.email) != null) {
             throw new ApiException(400, "duplicateEmail", "Duplicate email");
         }
+
+        user.avatar = "http://www.gravatar.com/avatar/" + MD5Utils.md5Hex(user.email) + "?d=wavatar";
 
         // Explicitly give a fresh id to the user (we need it for next step)
         user.id = UsersRepository.allocateNewId();

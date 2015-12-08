@@ -3,6 +3,7 @@ package fr.ecp.sio.appenginedemo.model;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Load;
 
 import java.util.Date;
 
@@ -23,6 +24,7 @@ public class Message {
     // Instead, we use a special Objectify class, a Ref<>, witch is just a reference to a user entity.
     // This trick allows lazy loading of users, and populating our model classes (remember there is not JOIN in the Datastore).
     // We take care of how this Ref<> will be serialized into JSON in the GsonFactory class
+    @Load
     public Ref<User> user;
 
 }
