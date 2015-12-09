@@ -20,10 +20,12 @@ public class Message {
     public Long id;
     public String text;
     public Date date;
+
     // We don't use a simple User field for the author of the message.
     // Instead, we use a special Objectify class, a Ref<>, witch is just a reference to a user entity.
     // This trick allows lazy loading of users, and populating our model classes (remember there is not JOIN in the Datastore).
-    // We take care of how this Ref<> will be serialized into JSON in the GsonFactory class
+    // We take care of how this Ref<> will be serialized into JSON in the GsonFactory class.
+    // The @Load annotation is required for automatically loading the author when a message is retrieved.
     @Load
     public Ref<User> user;
 

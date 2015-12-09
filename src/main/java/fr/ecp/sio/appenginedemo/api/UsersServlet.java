@@ -55,18 +55,18 @@ public class UsersServlet extends JsonServlet {
             throw new ApiException(400, "duplicateEmail", "Duplicate email");
         }
 
-        user.avatar = "http://www.gravatar.com/avatar/" + MD5Utils.md5Hex(user.email) + "?d=wavatar";
-
         // Explicitly give a fresh id to the user (we need it for next step)
         user.id = UsersRepository.allocateNewId();
 
         // TODO: find a solution to receive an store profile pictures
+        // Simulate an avatar image using Gravatar API
+        user.avatar = "http://www.gravatar.com/avatar/" + MD5Utils.md5Hex(user.email) + "?d=wavatar";
 
         // Hash the user password with the id a a salt
         user.password = DigestUtils.sha256Hex(user.password + user.id);
 
         // Persist the user into the repository
-        UsersRepository.insertUser(user);
+        UsersRepository.saveUser(user);
 
         // Create and return a token for the new user
         return TokenUtils.generateToken(user.id);

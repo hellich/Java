@@ -7,6 +7,7 @@ import fr.ecp.sio.appenginedemo.model.Message;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**

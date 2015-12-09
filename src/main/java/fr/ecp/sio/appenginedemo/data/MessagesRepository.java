@@ -45,4 +45,12 @@ public class MessagesRepository {
                 .getId();
     }
 
+    public static void deleteMessage(long id) {
+        ObjectifyService.ofy()
+                .delete()
+                .type(Message.class)
+                .id(id)
+                .now();
+    }
+
 }

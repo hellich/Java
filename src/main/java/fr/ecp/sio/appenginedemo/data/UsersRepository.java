@@ -2,11 +2,8 @@ package fr.ecp.sio.appenginedemo.data;
 
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
-import fr.ecp.sio.appenginedemo.model.Message;
 import fr.ecp.sio.appenginedemo.model.User;
-import org.apache.commons.codec.digest.DigestUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,11 +47,14 @@ public class UsersRepository {
                 .now();
     }
 
-    public static List<User> getUsers() {
-        return ObjectifyService.ofy()
+    public static UsersList getUsers() {
+        return new UsersList(
+            ObjectifyService.ofy()
                 .load()
                 .type(User.class)
-                .list();
+                .list(),
+            "dummyCursor"
+        );
     }
 
     public static long allocateNewId() {
@@ -62,12 +62,52 @@ public class UsersRepository {
         return new ObjectifyFactory().allocateId(User.class).getId();
     }
 
-    public static void insertUser(User user) {
+    public static void saveUser(User user) {
         user.id = ObjectifyService.ofy()
                 .save()
                 .entity(user)
                 .now()
                 .getId();
+    }
+
+    public static void deleteUser(long id) {
+        ObjectifyService.ofy()
+                .delete()
+                .type(User.class)
+                .id(id)
+                .now();
+    }
+
+    public static UsersList getUserFollowed(long id, int limit) {
+        return getUsers();
+    }
+
+    public static UsersList getUserFollowed(String cursor, int limit) {
+        return getUsers();
+    }
+
+    public static UsersList getUserFollowers(long id) {
+        return getUsers();
+    }
+
+    public static UsersList getUserFollowers(String cursor, long id) {
+        return getUsers();
+    }
+
+    public static class UsersList {
+
+        public final List<User> users;
+        public final String cursor;
+
+        private UsersList(List<User> users, String cursor) {
+            this.users = users;
+            this.cursor = cursor;
+        }
+
+    }
+
+    public static void setUserFollowed(long followerId, long followedId, boolean followed) {
+
     }
 
 }
