@@ -144,4 +144,8 @@ public class JsonServlet extends HttpServlet {
         return GsonFactory.getGson().fromJson(req.getReader(), type);
     }
 
+    private static boolean checkRight(HttpServletRequest reqCurrentUser, long idTargetUser) throws ApiException
+    {
+        return getAuthenticatedUser(reqCurrentUser).id == idTargetUser;
+    }
 }

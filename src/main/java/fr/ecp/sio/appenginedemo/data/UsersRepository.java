@@ -4,6 +4,7 @@ import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 import fr.ecp.sio.appenginedemo.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,6 +82,9 @@ public class UsersRepository {
     public static UsersList getUserFollowed(long id, int limit) {
         return getUsers();
     }
+    public static UsersList getUserFollowed(long id) {
+        return getUsers();
+    }
 
     public static UsersList getUserFollowed(String cursor, int limit) {
         return getUsers();
@@ -91,6 +95,9 @@ public class UsersRepository {
     }
 
     public static UsersList getUserFollowers(String cursor, long id) {
+        return getUsers();
+    }
+    public static UsersList getUserFollowers(long id, int limit) {
         return getUsers();
     }
 
@@ -110,4 +117,13 @@ public class UsersRepository {
 
     }
 
+    public static User UpdateUser(User user)
+    {
+        return getUser(user.id);
+    }
+
+    public static void deleteRelashionsForUser(User user)
+    {
+
+    }
 }

@@ -2,6 +2,7 @@ package fr.ecp.sio.appenginedemo.data;
 
 import com.googlecode.objectify.ObjectifyService;
 import fr.ecp.sio.appenginedemo.model.Message;
+import fr.ecp.sio.appenginedemo.model.User;
 
 import java.util.List;
 
@@ -53,4 +54,26 @@ public class MessagesRepository {
                 .now();
     }
 
+    public static void deleteListMessages(List<Message> ListMessages) {
+        for(Message message : ListMessages) {
+            ObjectifyService.ofy()
+                    .delete()
+                    .type(Message.class)
+                    .id(message.id)
+                    .now();
+        }
+    }
+
+    public static void deleteListMessagesByUser(User user) {
+
+    }
+
+    public static List<Message> getUserMessages(long idUser) {
+        return getMessages();
+    }
+
+    public static Message updateMessage(Message message)
+    {
+        return getMessage(message.id);
+    }
 }
