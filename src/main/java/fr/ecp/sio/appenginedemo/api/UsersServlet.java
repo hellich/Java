@@ -9,6 +9,7 @@ import fr.ecp.sio.appenginedemo.utils.TokenUtils;
 import fr.ecp.sio.appenginedemo.utils.ValidationUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -27,8 +28,8 @@ public class UsersServlet extends JsonServlet {
         //define parameters to search/filter users by login, with limit, order...
         //get limit and continuationToken
         String limitHeader = req.getHeader(Global.LIMIT);
-        String continuationTokenHeader = req.getHeader(Global.CONTINUATION_TOKEN);
-        int limit = -1;
+        String continuationToken = req.getHeader(Global.CONTINUATION_TOKEN);
+        Integer limit = null;
         //parse limit
         try {
             limit = Integer.parseInt(limitHeader);
@@ -50,69 +51,13 @@ public class UsersServlet extends JsonServlet {
         if(followedBy != null)
         {
             //request is /users/{id}/followed
-            long idfollowedBy=-1;
-            if(followedBy != Global.ME)
-            {
-                try {
-                    //try parse to long if it's an id
-                    idfollowedBy = Long.parseLong(followedBy);
-                    UsersRepository.UsersList ListUserFollowed;
-                    if(limit>0)
-                        ListUserFollowed = UsersRepository.getUserFollowed(idfollowedBy, limit);
-                    else
-                        ListUserFollowed = UsersRepository.getUserFollowed(idfollowedBy);
-                    return ListUserFollowed != null ?  ListUserFollowed.users : null;
-                }catch (NumberFormatException e)
-                {
-                    //it's not an id and it's not "me"
-                    throw new ApiException(400, "invalidRequest", "Id followedBy is not valid");
-                }
-            }
-            //followedBy parameter is equal to "me"
-            else
-            {
-                User MeUser = getAuthenticatedUser(req);
-                if(MeUser != null)
-                {
-                    return UsersRepository.getUserFollowed(MeUser.id, limit).users;
-                }
-                else
-                    throw new ApiException(400, "invalidRequest", "Token is needed");
-            }
+            return getUserFollowed(req, followedBy, limit, continuationToken);
         }
 
         if(followerOf != null)
         {
             //request is /users/{id}/follower
-            long idfollowerOf=-1;
-            if(followerOf != Global.ME)
-            {
-                try {
-                    //try parse to long if it's an id
-                    idfollowerOf = Long.parseLong(followerOf);
-                    UsersRepository.UsersList ListUserFollowers;
-                    if(limit>0)
-                        ListUserFollowers = UsersRepository.getUserFollowed(idfollowerOf, limit);
-                    else
-                        ListUserFollowers = UsersRepository.getUserFollowed(idfollowerOf);
-                    return ListUserFollowers != null ?  ListUserFollowers.users : null;
-                }catch (NumberFormatException e)
-                {
-                    //it's not an id and it's not "me"
-                    throw new ApiException(400, "invalidRequest", "Id followedBy is not valid");
-                }
-            }
-            //followerOf parameter is equal to "me"
-            else
-            {
-                User MeUser = getAuthenticatedUser(req);
-                if(MeUser != null)
-                {
-                    return UsersRepository.getUserFollowers(MeUser.id, limit).users;
-                }
-                else
-                    throw new ApiException(400, "invalidRequest", "Token is needed");
-            }
+            return getUserFollowers(req, followerOf, limit, continuationToken);
         }
         return null;
     }
@@ -162,6 +107,66 @@ public class UsersServlet extends JsonServlet {
         // Create and return a token for the new user
         return TokenUtils.generateToken(user.id);
 
+    }
+
+    private List<User> getUserFollowed(HttpServletRequest req, String followedBy, int limit, String cursor) throws ApiException
+    {
+        long idfollowedBy=-1;
+        if(followedBy != Global.ME)
+        {
+            try {
+                //try parse to long if it's an id
+                idfollowedBy = Long.parseLong(followedBy);
+                UsersRepository.UsersList ListUserFollowed = UsersRepository.getUserFollowed(idfollowedBy, limit, cursor);
+                return ListUserFollowed != null ?  ListUserFollowed.users : null;
+            }catch (NumberFormatException e)
+            {
+                //it's not an id and it's not "me"
+                throw new ApiException(400, "invalidRequest", "Id followedBy is not valid");
+            }
+        }
+        //followedBy parameter is equal to "me"
+        else
+        {
+            User MeUser = getAuthenticatedUser(req);
+            if(MeUser != null)
+            {
+                UsersRepository.UsersList ListUserFollowed = UsersRepository.getUserFollowed(MeUser.id, limit, cursor);
+                return ListUserFollowed != null ? ListUserFollowed.users : null;
+            }
+            else
+                throw new ApiException(400, "invalidRequest", "Token is needed");
+        }
+    }
+
+    private List<User> getUserFollowers(HttpServletRequest req, String followerOf, Integer limit, String cursor) throws ApiException
+    {
+        long idfollowerOf=-1;
+        if(followerOf != Global.ME)
+        {
+            try {
+                //try parse to long if it's an id
+                idfollowerOf = Long.parseLong(followerOf);
+                UsersRepository.UsersList ListUserFollowers = UsersRepository.getUserFollowers(idfollowerOf, limit, cursor);
+                return ListUserFollowers != null ?  ListUserFollowers.users : null;
+            }catch (NumberFormatException e)
+            {
+                //it's not an id and it's not "me"
+                throw new ApiException(400, "invalidRequest", "Id followedBy is not valid");
+            }
+        }
+        //followerOf parameter is equal to "me"
+        else
+        {
+            User MeUser = getAuthenticatedUser(req);
+            if(MeUser != null)
+            {
+                UsersRepository.UsersList ListUserFollowers = UsersRepository.getUserFollowers(MeUser.id, limit, cursor);
+                return ListUserFollowers != null ? ListUserFollowers.users : null;
+            }
+            else
+                throw new ApiException(400, "invalidRequest", "Token is needed");
+        }
     }
 
 }

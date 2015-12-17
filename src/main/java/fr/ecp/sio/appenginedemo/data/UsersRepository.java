@@ -79,6 +79,9 @@ public class UsersRepository {
                 .now();
     }
 
+    public static UsersList getUserFollowed(long id, Integer limit, String cursor) {
+        return getUsers();
+    }
     public static UsersList getUserFollowed(long id, int limit) {
         return getUsers();
     }
@@ -90,6 +93,9 @@ public class UsersRepository {
         return getUsers();
     }
 
+    public static UsersList getUserFollowers(long id, Integer limit, String cursor) {
+        return getUsers();
+    }
     public static UsersList getUserFollowers(long id) {
         return getUsers();
     }

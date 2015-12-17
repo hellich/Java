@@ -6,6 +6,7 @@ import fr.ecp.sio.appenginedemo.data.UsersRepository;
 import fr.ecp.sio.appenginedemo.model.Message;
 import fr.ecp.sio.appenginedemo.model.User;
 import fr.ecp.sio.appenginedemo.utils.Global;
+import fr.ecp.sio.appenginedemo.utils.ValidationUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -73,6 +74,21 @@ public class UserServlet extends JsonServlet {
             //return current user
             return currentUser;
         }
+
+        //validate inputs
+        if (modifiedUser.password != null && !ValidationUtils.validatePassword(modifiedUser.password)) {
+            throw new ApiException(400, "invalidPassword", "Password did not match the specs");
+        }
+        if (modifiedUser.email != null) {
+            if(!ValidationUtils.validateEmail(modifiedUser.email))
+                throw new ApiException(400, "invalidEmail", "Invalid email");
+
+            User tempUser = UsersRepository.getUserByEmail(modifiedUser.email);
+            if (tempUser != null && modifiedUser.id != tempUser.id) {
+                throw new ApiException(400, "duplicateEmail", "Duplicate email");
+            }
+        }
+
         //a user can modify his own account
         if(userToEdit.id == currentUser.id) {
             modifiedUser.id = userToEdit.id;
