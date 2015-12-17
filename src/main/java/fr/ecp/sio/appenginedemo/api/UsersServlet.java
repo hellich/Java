@@ -109,7 +109,7 @@ public class UsersServlet extends JsonServlet {
 
     }
 
-    private List<User> getUserFollowed(HttpServletRequest req, String followedBy, int limit, String cursor) throws ApiException
+    private List<User> getUserFollowed(HttpServletRequest req, String followedBy, Integer limit, String cursor) throws ApiException
     {
         long idfollowedBy=-1;
         if(followedBy != Global.ME)
