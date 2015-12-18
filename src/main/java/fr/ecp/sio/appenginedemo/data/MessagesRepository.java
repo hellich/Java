@@ -3,6 +3,7 @@ package fr.ecp.sio.appenginedemo.data;
 import com.googlecode.objectify.ObjectifyService;
 import fr.ecp.sio.appenginedemo.model.Message;
 import fr.ecp.sio.appenginedemo.model.User;
+import fr.ecp.sio.appenginedemo.utils.Enums;
 
 import java.util.List;
 
@@ -75,8 +76,12 @@ public class MessagesRepository {
     }
 
     //update a message passed as a parameter
-    public static Message updateMessage(Message message)
-    {
+    public static Message updateMessage(Message message) {
         return getMessage(message.id);
+    }
+
+    //order a list of messages
+    public static List<Message> orderMessages(List<Message> listMessages, Enums.ORDER eOrder) {
+        return listMessages;
     }
 }
