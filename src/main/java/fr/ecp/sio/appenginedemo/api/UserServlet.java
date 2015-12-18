@@ -117,9 +117,13 @@ public class UserServlet extends JsonServlet {
         if(currentUser.id == targetUser.id)
         {
             // Delete the messages
-            MessagesRepository.deleteListMessagesByUser(currentUser);
+            List<Message> ListMessagesUser =  MessagesRepository.getUserMessages(currentUser.id);
+            if(ListMessagesUser != null && ListMessagesUser.size()> 0)
+                MessagesRepository.deleteListMessages(ListMessagesUser);
+
             // Delete the relationships
-            UsersRepository.deleteRelashionsForUser(currentUser);
+            deleteRelationshipsForUser(currentUser);
+
             // Delete user
             UsersRepository.deleteUser(currentUser.id);
         }
@@ -152,5 +156,26 @@ public class UserServlet extends JsonServlet {
             throw new ApiException(400, "invalidRequest", "Id is not valid");
         // Lookup in repository
         return UsersRepository.getUser(id);
+    }
+
+    //delete all relationships for a user
+    private void deleteRelationshipsForUser(User currentUser)
+    {
+        //get user followed
+        UsersRepository.UsersList UserFollowed = UsersRepository.getUserFollowed(currentUser.id);
+        List<User> UserFollowedList = UserFollowed != null ? UserFollowed.users : null;
+        //Delete the relationships with followed
+        if(UserFollowedList != null && UserFollowedList.size()> 0) {
+            for (User followed : UserFollowedList)
+                UsersRepository.setUserFollowed(currentUser.id, followed.id, false);
+        }
+        //get user followers
+        UsersRepository.UsersList UserFollowers = UsersRepository.getUserFollowers(currentUser.id);
+        List<User> UserFollowersList = UserFollowers != null ? UserFollowers.users : null;
+        //Delete the relationships with followers
+        if(UserFollowersList != null && UserFollowersList.size()> 0) {
+            for (User follower : UserFollowersList)
+                UsersRepository.setUserFollowed(follower.id, currentUser.id, false);
+        }
     }
 }

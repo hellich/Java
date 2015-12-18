@@ -10,4 +10,6 @@ public class Global {
     public static final String LIMIT = "limit";
     public static final String CONTINUATION_TOKEN = "continuationToken";
     public static final String FOLLOWED = "followed";
+    public static final String ORDER = "order";
+    public static final String AUTHOR = "author";
 }

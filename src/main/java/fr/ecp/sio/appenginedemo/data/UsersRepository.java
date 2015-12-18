@@ -20,6 +20,7 @@ public class UsersRepository {
         ObjectifyService.register(User.class);
     }
 
+    //get a user by its login
     public static User getUserByLogin(final String login) {
         // We can add filter of a property if this property has the @Index annotation in the model class
         // first() returns only one result
@@ -31,6 +32,7 @@ public class UsersRepository {
                 .now();
     }
 
+    //get a user by its email
     public static User getUserByEmail(final String email) {
         return ObjectifyService.ofy()
                 .load()
@@ -40,6 +42,7 @@ public class UsersRepository {
                 .now();
     }
 
+    //get a user by its id
     public static User getUser(long id) {
         return ObjectifyService.ofy()
                 .load()
@@ -48,6 +51,7 @@ public class UsersRepository {
                 .now();
     }
 
+    //get all users
     public static UsersList getUsers() {
         return new UsersList(
             ObjectifyService.ofy()
@@ -58,11 +62,13 @@ public class UsersRepository {
         );
     }
 
+    //allocate an id to a user
     public static long allocateNewId() {
         // Sometime we need to allocate an id before persisting, the library allows it
         return new ObjectifyFactory().allocateId(User.class).getId();
     }
 
+    //save a user
     public static void saveUser(User user) {
         user.id = ObjectifyService.ofy()
                 .save()
@@ -71,6 +77,7 @@ public class UsersRepository {
                 .getId();
     }
 
+    //delete a user by passing its id
     public static void deleteUser(long id) {
         ObjectifyService.ofy()
                 .delete()
@@ -79,32 +86,37 @@ public class UsersRepository {
                 .now();
     }
 
+    //get list of users that a user follows
+    //we pass the user id, limit and a cursor
     public static UsersList getUserFollowed(long id, Integer limit, String cursor) {
         return getUsers();
     }
-    public static UsersList getUserFollowed(long id, int limit) {
-        return getUsers();
-    }
+
+    //get list of users that a user follows
+    //we pass the user id
     public static UsersList getUserFollowed(long id) {
         return getUsers();
     }
 
-    public static UsersList getUserFollowed(String cursor, int limit) {
-        return getUsers();
-    }
-
+    //get the list of users that follows a user
+    //we pass the user id, limit and cursor
     public static UsersList getUserFollowers(long id, Integer limit, String cursor) {
         return getUsers();
     }
+
+    //get the list of users that follows a user
+    //we pass the user id
     public static UsersList getUserFollowers(long id) {
         return getUsers();
     }
 
-    public static UsersList getUserFollowers(String cursor, long id) {
-        return getUsers();
+    //set the relathionship between 2 users
+    public static void setUserFollowed(long followerId, long followedId, boolean followed) {
     }
-    public static UsersList getUserFollowers(long id, int limit) {
-        return getUsers();
+
+    //update a user
+    public static User UpdateUser(User user) {
+        return getUser(user.id);
     }
 
     public static class UsersList {
@@ -116,20 +128,6 @@ public class UsersRepository {
             this.users = users;
             this.cursor = cursor;
         }
-
-    }
-
-    public static void setUserFollowed(long followerId, long followedId, boolean followed) {
-
-    }
-
-    public static User UpdateUser(User user)
-    {
-        return getUser(user.id);
-    }
-
-    public static void deleteRelashionsForUser(User user)
-    {
 
     }
 }
