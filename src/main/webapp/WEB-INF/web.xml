@@ -84,4 +84,14 @@
         <url-pattern>auth/token</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Upload</servlet-name>
+        <servlet-class>fr.ecp.sio.appenginedemo.api.Upload.UploadServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Upload</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+
 </web-app>

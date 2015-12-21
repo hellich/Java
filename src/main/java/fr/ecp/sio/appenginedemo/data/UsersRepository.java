@@ -119,6 +119,10 @@ public class UsersRepository {
         return getUser(user.id);
     }
 
+    public static void setUserAvatar(long userId, String avatarUrl){
+
+    }
+
     public static class UsersList {
 
         public final List<User> users;
@@ -128,6 +132,5 @@ public class UsersRepository {
             this.users = users;
             this.cursor = cursor;
         }
-
     }
 }

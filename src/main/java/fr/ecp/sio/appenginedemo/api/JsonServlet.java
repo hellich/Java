@@ -6,6 +6,7 @@ import fr.ecp.sio.appenginedemo.data.UsersRepository;
 import fr.ecp.sio.appenginedemo.gson.GsonFactory;
 import fr.ecp.sio.appenginedemo.model.User;
 import fr.ecp.sio.appenginedemo.utils.TokenUtils;
+import org.apache.commons.fileupload.FileUploadException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -86,6 +87,30 @@ public class JsonServlet extends HttpServlet {
 
     // Our custom doDelete(), to be optionally overwritten by sub-servlets.
     protected Object doDelete(HttpServletRequest req) throws ServletException, IOException, ApiException {
+        return null;
+    }
+
+    @Override
+    protected final void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            // Call our custom doGet() below to get the response as an Object
+            Object response = doPut(req);
+            // Write this object as JSON into the response
+            sendResponse(response, resp);
+        } catch (ApiException e) {
+            // Our subclasses can raise a custom ApiException for the API to send well-formatted errors
+            // If we catch one of these, we set the HTTP response code to the defined value and send the error object as JSON
+            resp.setStatus(e.getError().status);
+            sendResponse(e.getError(), resp);
+        } catch (FileUploadException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Instead of overriding the default doGet() method above, our subclasses are supposed to override this one.
+    // This method returns an object that will be written to the response.
+    // The method can throw ServletException and IOException (default for servlet), but also our custom ApiException
+    protected Object doPut(HttpServletRequest req) throws ServletException, IOException, ApiException, FileUploadException {
         return null;
     }
 

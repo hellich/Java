@@ -25,4 +25,9 @@
         <to>/messages?author=$1</to>
     </rule>
 
+    <rule>
+        <from>/users/(\w+)/avatar</from>
+        <to>/upload?Id=$1</to>
+    </rule>
+
 </urlrewrite>
