@@ -22,7 +22,7 @@ public class UploadServlet extends JsonServlet {
 
         String UploadedFile = Upload.UploadFile(req, "avatar");
         //get target user id
-        String stringId = req.getParameter("Id");
+        /*String stringId = req.getParameter("Id");
         long targerUserId = -1 ;
         try {
             targerUserId = Long.parseLong(stringId);
@@ -31,7 +31,7 @@ public class UploadServlet extends JsonServlet {
             throw new ApiException(400, "invalidRequest", "Id is not valid");
         }
         //update the avatar url of the target user
-        UsersRepository.setUserAvatar(targerUserId, UploadedFile);
+        UsersRepository.setUserAvatar(targerUserId, UploadedFile);*/
         //return the avatar url
         return UploadedFile;
     }

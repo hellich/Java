@@ -1,4 +1,6 @@
-appengine-skeleton
-=============================
+API micro-blogging
 
-This is a generated application from the appengine-skeleton archetype.
+PS : In order to test the avatar upload, please use the page "Test.jsp" (URL locally : localhost:8080/test.jsp)
+1- Choose the image to upload
+2- Click on Submit button
+3- Result will be the url of the uploaded image on server
